@@ -1,0 +1,24 @@
+<aura:component  controller="BoatDataService" implements="force:appHostable,flexipage:availableForAllPageTypes" access="global">
+    <aura:attribute name="boatTypes" type="BoatType__c[]"  default=""/>
+    <aura:attribute name="showNewButton" type="boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:registerEvent name="formsubmit" type="c:FormSubmit"/>
+
+    <lightning:layout horizontalAlign="center" verticalAlign="end">
+        <lightning:layoutItem padding="around-small">
+        <lightning:select aura:id="type" name="selectedBoatType" value="">
+            <option value="" text="All Types"></option>
+            <aura:iteration items="{!v.boatTypes}" var="boatType">
+                <option value="{!boatType.Id}" text="{!boatType.Name}"></option>
+            </aura:iteration>
+        </lightning:select>
+        </lightning:layoutItem>
+        <lightning:layoutItem padding="around-small">
+            <lightning:button variant="brand" label="Search" onclick="{!c.onFormSubmit}" />
+            <aura:if isTrue="{!v.showNewButton}">
+                <lightning:button variant="brand-outline" label="New" onclick="{!c.handleCreate}"/>
+            </aura:if>
+        </lightning:layoutItem>
+    </lightning:layout>
+
+</aura:component>

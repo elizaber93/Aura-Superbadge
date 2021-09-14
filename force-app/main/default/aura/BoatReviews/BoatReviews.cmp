@@ -1,0 +1,83 @@
+<aura:component controller="BoatReviews" implements="force:appHostable,flexipage:availableForAllPageTypes" access="global">
+    
+    <aura:attribute name="eventEnable" type="boolean" default="false"/>
+    <aura:attribute name="boat" type="Boat__c" access="public"/>
+    <aura:attribute name="boatReviews" type="BoatReview__c[]" access="private"/>
+    <aura:method name="refresh" action="{!c.doInit}" access="public"/>
+    <aura:handler name="change" value="{!v.boat}" action="{!c.doInit}"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+
+                <div class="slds-feed">
+                    <ul class="slds-feed__list">
+                        <ui:scrollerWrapper class="wrapper">
+                            <aura:iteration items="{!v.boatReviews}" var="boatReview">
+                                <li class="slds-feed__item">
+                                    <article class="slds-post">
+                                        <header class="slds-post__header slds-media">
+                                          <div class="slds-media__figure">
+                                            
+                                              <lightning:avatar src="{!boatReview.CreatedBy.SmallPhotoUrl}" variant = "circle"></lightning:avatar>
+                                          </div>
+                                            <div class="slds-media__body">
+                                                <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+                                                    <p>
+                                                        <aura:if isTrue="{!v.userDetailsSupported}">
+                                                            <a href="#" title="Name" data-userid="{! boatReview.CreatedBy.Id }" onclick="{! c.onUserInfoClick }">
+                                                                {! boatReview.CreatedBy.Name }
+                                                            </a> — {! boatReview.CreatedBy.CompanyName }
+
+                                                            <aura:set attribute="else">
+                                                                {! boatReview.CreatedBy.Name } — {! boatReview.CreatedBy.CompanyName }
+                                                            </aura:set>
+                                                        </aura:if>
+                                                    </p>
+                                                </div>
+                                                <div class="slds-post__content slds-text-longform">
+                                                    <p>
+                                                        <lightning:formattedDateTime value="{!boatReview.CreatedDate}"></lightning:formattedDateTime>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </header>
+                                        <div class="slds-text-longform">
+                                            <p class="slds-text-title_caps">
+                                              <!-- display Name -->
+                                              {!boatReview.Name}
+                                            </p>
+                                            <!-- display Comment__c -->
+                                            <lightning:formattedRichText value="{!boatReview.Comment__c}"></lightning:formattedRichText>
+                                          </div>
+                                        <div>
+                                            <c:FiveStarRating value="{!boatReview.Rating__c}" readonly="true"/>
+                                        </div>
+                                        <footer class="slds-post__footer">
+                                        </footer>
+                                    </article>
+                                </li>
+                            </aura:iteration>
+                        </ui:scrollerWrapper>
+                    </ul>
+                  </div>
+            
+        
+        <aura:if isTrue="{!v.boatReviews.length == 0}">
+            <span>
+                <div class="slds-align_absolute-center">
+                    No reviews available.
+                </div>
+            </span>
+        </aura:if>
+
+
+
+
+        
+
+
+
+
+    
+
+</aura:component>
